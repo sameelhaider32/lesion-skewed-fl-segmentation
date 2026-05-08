@@ -34,46 +34,56 @@ This project proposes **SCWA-LW** (Size-Composition Weighted Aggregation with La
 lesion-skewed-fl-segmentation/
 │
 ├── README.md
-├── requirements.txt
+├── .gitignore
+│
+├── data/
+│   ├── README.md                              # Explains the two data files below
+│   ├── final_data_partitions.json             # 5-client train/val/test splits
+│   └── master_lesion_stats.csv               # Per-case lesion volumes and size groups
+│
+├── deliverables/
+│   └── Deliverable 2.ipynb                    # Phase 2 formal submission notebook
 │
 ├── phase2_fedprox_baseline/
-│   ├── Phase2_FedAvg_Experiments.ipynb    # FedAvg runs exploring local epoch count and hyperparams
-│   └── Phase2_FedProx_Baseline.ipynb      # Final FedProx baseline, small model (4.7M), standard Dice loss
+│   └── fedavg + fedprox (35 rounds).ipynb    # FedAvg & FedProx experiments, local epoch tuning
 │
 ├── phase3_lads/
-│   └── Phase3_LADS.ipynb                  # LADS experiment (see note below — failed)
+│   └── LADS_COMPLETE.ipynb                    # LADS experiment (see note below — failed)
 │
 ├── phase4_experiments/
-│   ├── Phase4_Baseline.ipynb              # Exp A: FedAvg + mild FTL, 50 rounds
-│   ├── Experiment_B_Final.ipynb           # Exp B: FedAvg + strong FTL, 30 rounds
-│   ├── Experiment_C_Final.ipynb           # Exp C: FedProx + SCWA-LW + strong FTL, 30 rounds
-│   └── Report_Figures_Notebook.ipynb      # Loads saved outputs, generates all report figures
+│   ├── Experiment_A.ipynb                     # Exp A: FedAvg + mild FTL, 50 rounds
+│   ├── Experiment_B-FINAL.ipynb               # Exp B: FedAvg + strong FTL, 30 rounds
+│   ├── Experiment_C-FINAL.ipynb               # Exp C: FedProx + SCWA-LW + strong FTL, 30 rounds
+│   └── Report_Figures_Notebook.ipynb          # Loads saved outputs, generates all report figures
 │
 ├── report/
-│   ├── main.tex                           # ICML 2021 format LaTeX source
-│   └── main.bib                           # Bibliography
+│   ├── main.tex                               # ICML 2021 format LaTeX source
+│   └── main.bib                               # Bibliography
 │
-└── outputs/                               # Gitignored — checkpoints, history CSVs, figures
-    ├── fedavg_baseline/
-    ├── fedavg_lft_strong/
-    └── fedprox_scwa_lw/
+└── outputs/                                   # Gitignored — checkpoints, history CSVs, figures
 ```
 
 ---
 
 ## Phase Descriptions
 
-### Phase 2 — Experimentation and Baselines
+### Data Files (`data/`)
+Two files are required before running any Phase 4 notebook:
+
+- **`final_data_partitions.json`** — defines the 5-client federation. Contains per-client train paths, per-client validation paths (10 cases each, stratified to guarantee small-lesion coverage), and the locked 90-case test set. Generated once using Dirichlet (α=0.5) applied independently per size group.
+- **`master_lesion_stats.csv`** — per-case whole-tumour volume (cm³) and assigned size group (small/medium/large) for all FeTS 2022 cases. Used during partitioning and at evaluation to assign each test case to its size group.
+
+---
+
+### Phase 2 — Experimentation and Baselines (`phase2_fedprox_baseline/`)
+
+**`fedavg + fedprox (35 rounds).ipynb`** covers two things in one notebook:
 
 #### FedAvg Experiments
-Before settling on a final configuration, we ran a series of FedAvg experiments to understand how the federated training setup behaves and find a good starting point. The main thing we were trying to figure out was the **optimal number of local epochs per round** — too few and the model doesn't learn enough from each client per round; too many and the clients diverge too far from each other (client drift), which hurts the global model when weights are averaged.
-
-We tried different values and observed how training stability and validation Dice changed. These experiments gave us the intuition and hyperparameter choices (learning rate, batch size, patch size) that carried forward into all Phase 4 experiments.
+Before settling on a configuration we ran FedAvg with different numbers of local epochs per round to understand how the setup behaves. The key question was finding the right local epoch count — too few and the model doesn't learn enough per round; too many and clients diverge too far from each other (client drift), which hurts aggregation. These runs gave us the hyperparameter intuition carried forward into all Phase 4 experiments.
 
 #### FedProx Baseline
-Once we had a stable FedAvg setup, we switched to FedProx regularisation (μ=0.01) as the formal Phase 2 submission. FedProx adds a penalty during local training that stops each client's weights from drifting too far from the global model, which helps in non-IID settings like ours.
-
-This used a smaller 3D U-Net (channels 16–256, ~4.7M parameters), standard Dice loss, and 1 local epoch per round. It serves as the reference point that all Phase 4 experiments are compared against, and it shows clearly how poorly small tumours are handled without any size-aware strategy (Small Dice = 0.088).
+With a stable setup confirmed, we added FedProx regularisation (μ=0.01), which penalises each client for drifting too far from the global model during local training. This used a smaller 3D U-Net (channels 16–256, ~4.7M parameters), standard Dice loss, and ran for 35 rounds. It serves as the earliest reference point and shows clearly how poorly small tumours are handled without any size-aware strategy (Small Dice = 0.088).
 
 ---
 
