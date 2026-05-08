@@ -50,6 +50,7 @@ lesion-skewed-fl-segmentation/
 │   │   └── fedavg + fedprox (35 rounds).ipynb    # FedAvg & FedProx experiments, local epoch tuning
 │   ├── phase3_lads/
 │   │   └── LADS_COMPLETE.ipynb                    # LADS experiment (see note below — failed)
+│   │   └── Group20_27100045_27100409_phase3_baseline.ipynb                    # Comparable phase 3 baseline
 │   └── phase4_experiments/
 │       ├── Experiment_A.ipynb                     # Exp A: FedAvg + mild FTL, 50 rounds
 │       ├── Experiment_B-FINAL.ipynb               # Exp B1: FedAvg + strong FTL, 30 rounds
