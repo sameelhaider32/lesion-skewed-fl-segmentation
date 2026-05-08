@@ -4,7 +4,7 @@ This folder contains the partition and statistics files generated from the FeTS 
 These files are required by all Phase 4 notebooks and the Report Figures notebook.
 
 ## Files
-
+---
 
 ### final_data_partitions.json
 Defines the 5-client federation split. Contains:
