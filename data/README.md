@@ -5,7 +5,7 @@ These files are required by all Phase 4 notebooks and the Report Figures noteboo
 
 ## Files
 
-### inal_data_partitions.json
+### final_data_partitions.json
 Defines the 5-client federation split. Contains:
 - Per-client train case paths (80 cases each, capped via stratified sampling)
 - Per-client validation case paths (10 cases each, stratified to guarantee small-lesion coverage)
