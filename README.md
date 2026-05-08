@@ -45,20 +45,17 @@ lesion-skewed-fl-segmentation/
 │   └── master_lesion_stats.csv               # Per-case lesion volumes and size groups
 │
 ├── deliverables/
-│   └── Deliverable 2.ipynb                    # Phase 2 formal submission notebook
-│
-├── phase2_fedprox_baseline/
-│   └── fedavg + fedprox (35 rounds).ipynb    # FedAvg & FedProx experiments, local epoch tuning
-│
-├── phase3_lads/
-│   └── LADS_COMPLETE.ipynb                    # LADS experiment (see note below — failed)
-│
-├── phase4_experiments/
-│   ├── Experiment_A.ipynb                     # Exp A: FedAvg + mild FTL, 50 rounds
-│   ├── Experiment_B-FINAL.ipynb               # Exp B1: FedAvg + strong FTL, 30 rounds
-│   ├── Experiment_B2.ipynb                    # Exp B2: FedProx + strong FTL, NO SCWA, 30 rounds
-│   ├── Experiment_C-FINAL.ipynb               # Exp C: FedProx + SCWA-LW + strong FTL, 30 rounds
-│   └── Report_Figures_Notebook.ipynb          # Loads saved outputs, generates all report figures
+│   ├── Deliverable 2.ipynb                    # Phase 2 formal submission notebook
+│   ├── phase2_fedprox_baseline/
+│   │   └── fedavg + fedprox (35 rounds).ipynb    # FedAvg & FedProx experiments, local epoch tuning
+│   ├── phase3_lads/
+│   │   └── LADS_COMPLETE.ipynb                    # LADS experiment (see note below — failed)
+│   └── phase4_experiments/
+│       ├── Experiment_A.ipynb                     # Exp A: FedAvg + mild FTL, 50 rounds
+│       ├── Experiment_B-FINAL.ipynb               # Exp B1: FedAvg + strong FTL, 30 rounds
+│       ├── Experiment_B2.ipynb                    # Exp B2: FedProx + strong FTL, NO SCWA, 30 rounds
+│       ├── Experiment_C-FINAL.ipynb               # Exp C: FedProx + SCWA-LW + strong FTL, 30 rounds
+│       └── Report_Figures_Notebook.ipynb          # Loads saved outputs, generates all report figures
 │
 ├── report/
 │   ├── main.tex                               # ICML 2021 format LaTeX source
@@ -79,7 +76,7 @@ Two files are required before running any Phase 4 notebook:
 
 ---
 
-### Phase 2 — Experimentation and Baselines (`phase2_fedprox_baseline/`)
+### Phase 2 — Experimentation and Baselines (`deliverables/phase2_fedprox_baseline/`)
 
 **`fedavg + fedprox (35 rounds).ipynb`** covers two things in one notebook:
 
@@ -91,7 +88,7 @@ With a stable setup confirmed, we added FedProx regularisation (μ=0.01), which 
 
 ---
 
-### Phase 3 — LADS (Failed Approach)
+### Phase 3 — LADS (Failed Approach) (`deliverables/phase3_lads/`)
 
 **LADS** (Lesion-Aware Dynamic Sampling) attempted to address small-tumour under-representation by oversampling small-lesion patches during local training so each client's gradient signal was biased toward small tumours regardless of how many small-tumour cases that client had.
 
@@ -104,7 +101,7 @@ This failure directly motivated SCWA-LW, which addresses the problem at the aggr
 
 ---
 
-### Phase 4 — Controlled Ablation (Main Contribution)
+### Phase 4 — Controlled Ablation (Main Contribution) (`deliverables/phase4_experiments/`)
 
 Four experiments on the same 5-client FeTS 2022 federation (Dirichlet α=0.5, 80 cases/client):
 
@@ -165,4 +162,5 @@ If you use this code, please cite the FeTS 2022 benchmark:
   title={The Federated Tumor Segmentation (FeTS) Challenge 2022},
   ...
 }
+```
 ```
