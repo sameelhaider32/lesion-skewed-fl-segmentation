@@ -59,10 +59,9 @@ lesion-skewed-fl-segmentation/
 │       └── Report_Figures_Notebook.ipynb          # Loads saved outputs, generates all report figures
 │
 ├── report/
-│   ├── main.tex                               # ICML 2021 format LaTeX source
-│   └── main.bib                               # Bibliography
+│   ├── Group20_27100045_27100409_Report.pdf                               # Report PDF
+│   └── .gitkeep                               # .gitkeep
 │
-└── outputs/                                   # Gitignored — checkpoints, history CSVs, figures
 ```
 
 ---
