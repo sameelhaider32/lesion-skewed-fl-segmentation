@@ -1,6 +1,6 @@
 # Skew-Aware Federated Learning for Brain Tumour Segmentation
 
-**Course:** CS 437 — Distributed and Federated Machine Learning  
+**Course:** CS 437 — Deep Learning  
 **Authors:** Zainab Usman (27100409) · Sameel Haider (27100045)  
 **Dataset:** [FeTS 2022](https://fets-ai.github.io/Challenge/) — Federated Tumour Segmentation Challenge
 
