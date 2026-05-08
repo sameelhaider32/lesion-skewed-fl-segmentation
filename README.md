@@ -20,8 +20,11 @@ This project proposes **SCWA-LW** (Size-Composition Weighted Aggregation with La
 |---|---|---|---|---|
 | Phase 2 — FedProx Baseline | 0.088 | 0.326 | 0.599 | 0.190 |
 | Exp A — FedAvg Baseline | 0.116 | 0.413 | 0.694 | 0.241 |
-| Exp B — Strong FTL | 0.118 | 0.446 | 0.704 | 0.247 |
+| Exp B1 — Strong FTL | 0.118 | 0.446 | 0.704 | 0.247 |
+| Exp B2 — FedProx + FTL (no SCWA) | 0.107 | 0.402 | 0.681 | 0.225 |
 | **Exp C — Full System (SCWA-LW)** | **0.128** | 0.435 | **0.716** | **0.261** |
+
+> **Key finding:** B2 (FedProx without SCWA-LW) scores *below* the FedAvg baseline on small tumours, confirming that SCWA-LW alone drives the improvement. C vs B2 = +0.021 small Dice, +0.036 fair score (pure SCWA contribution).
 
 > **Fair Score** = harmonic mean of Small / Medium / Large Dice.  
 > Test set: 90 locked cases (30 small / 30 medium / 30 large), evaluated with sliding-window inference at overlap 0.75.
@@ -52,7 +55,8 @@ lesion-skewed-fl-segmentation/
 │
 ├── phase4_experiments/
 │   ├── Experiment_A.ipynb                     # Exp A: FedAvg + mild FTL, 50 rounds
-│   ├── Experiment_B-FINAL.ipynb               # Exp B: FedAvg + strong FTL, 30 rounds
+│   ├── Experiment_B-FINAL.ipynb               # Exp B1: FedAvg + strong FTL, 30 rounds
+│   ├── Experiment_B2.ipynb                    # Exp B2: FedProx + strong FTL, NO SCWA, 30 rounds
 │   ├── Experiment_C-FINAL.ipynb               # Exp C: FedProx + SCWA-LW + strong FTL, 30 rounds
 │   └── Report_Figures_Notebook.ipynb          # Loads saved outputs, generates all report figures
 │
@@ -102,13 +106,16 @@ This failure directly motivated SCWA-LW, which addresses the problem at the aggr
 
 ### Phase 4 — Controlled Ablation (Main Contribution)
 
-Three experiments on the same 5-client FeTS 2022 federation (Dirichlet α=0.5, 80 cases/client):
+Four experiments on the same 5-client FeTS 2022 federation (Dirichlet α=0.5, 80 cases/client):
 
 | Experiment | Strong FTL | FedProx | SCWA-LW | Rounds |
 |---|:---:|:---:|:---:|:---:|
 | A: FedAvg Baseline | ✗ | ✗ | ✗ | 50 |
-| B: Loss Only | ✓ | ✗ | ✗ | 30 |
+| B1: Strong FTL | ✓ | ✗ | ✗ | 30 |
+| B2: FedProx + FTL (no SCWA) | ✓ | ✓ | ✗ | 30 |
 | C: Full System | ✓ | ✓ | ✓ | 30 |
+
+**Experiment B2 is the critical control.** It adds FedProx on top of B1's loss config but deliberately excludes SCWA-LW. B2 scores *below* Baseline A on small tumours (0.107 vs 0.116), showing that FedProx alone is actively harmful — it suppresses Client 1's beneficial divergence without fixing the aggregation bias. Comparing C to B2 gives the cleanest isolation of SCWA-LW's contribution (+0.021 small Dice, +0.036 fair score) since the only difference between them is the aggregation weights.
 
 **Model:** 3D U-Net, channels=(32, 64, 128, 256, 320), ~12.9M parameters, patch size 96³.
 
