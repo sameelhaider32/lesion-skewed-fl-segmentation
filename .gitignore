@@ -1,0 +1,18 @@
+# Model checkpoints
+*.pt
+*.pth
+
+# Training outputs
+outputs/
+*_history.csv
+report_figures/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Drive mounts
+/content/
