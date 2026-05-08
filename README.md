@@ -8,7 +8,7 @@
 
 ## Overview
 
-Standard federated learning aggregation (FedAvg) weights clients by dataset size alone. In brain tumour segmentation, small tumours are rare and unevenly distributed across hospital clients — so the clients that actually have small-tumour cases get no more influence over the global model than clients that have none. This creates a **fairness gap**: the global model learns to segment large tumours reasonably well but consistently fails on small ones.
+Standard federated learning aggregation (FedAvg) weights clients by dataset size alone. In brain tumour segmentation, small tumours are rare and unevenly distributed across hospital clients, so the clients that actually have small-tumour cases get no more influence over the global model than clients that have none. This creates a **fairness gap**: the global model learns to segment large tumours reasonably well but consistently fails on small ones.
 
 This project proposes **SCWA-LW** (Size-Composition Weighted Aggregation with Layer-Wise routing) to fix this. Clients with more small-tumour cases get a higher aggregation weight, but *only* for the decoder layers of the U-Net. The encoder (which learns general brain anatomy useful to all clients) keeps standard FedAvg. The result is a 10% relative improvement in small-tumour Dice and 8.3% improvement in fair score over the FedAvg baseline.
 
